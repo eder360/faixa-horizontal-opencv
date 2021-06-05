@@ -4,11 +4,11 @@ from PIL import Image
 from glob import glob
 
 # Redimensionar foto
-img = Image.open("faixa-hotizontal-opencv/fotos/faixaFoto5.jpg")
+img = Image.open("faixa-horizontal-opencv/fotos/faixaFoto5.jpg")
 img = img.resize((round(400), round(300)), Image.BILINEAR)
-img.save( 'faixa-hotizontal-opencv/fotos/imagemRedimensionada.jpg', 'JPEG' )
+img.save( 'faixa-horizontal-opencv/fotos/imagemRedimensionada.jpg', 'JPEG' )
 
-image = cv2.imread("faixa-hotizontal-opencv/fotos/imagemRedimensionada.jpg")
+image = cv2.imread("faixa-horizontal-opencv/fotos/imagemRedimensionada.jpg")
 hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 blur = cv2.medianBlur(hsv ,11)
 
