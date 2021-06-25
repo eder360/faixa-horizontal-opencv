@@ -4,7 +4,7 @@ from PIL import Image
 from glob import glob
 
 # Redimensionar foto
-img = Image.open("faixa-horizontal-opencv/fotos/faixaFoto5.jpg")
+img = Image.open("faixa-horizontal-opencv/fotos/faixa.3.jpg")
 img = img.resize((round(400), round(300)), Image.BILINEAR)
 img.save( 'faixa-horizontal-opencv/fotos/imagemRedimensionada.jpg', 'JPEG' )
 
@@ -12,12 +12,20 @@ image = cv2.imread("faixa-horizontal-opencv/fotos/imagemRedimensionada.jpg")
 hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 blur = cv2.medianBlur(hsv ,11)
 
-lower = {'yellow': (20, 30, 119)}
+lower = {'red': (166, 84, 141), 'blue': (97, 100, 117), 'yellow': (17, 59, 119)}
 
-upper = {'yellow': (54, 255, 255)}
+upper = {'red': (186, 255, 255), 'blue': (117, 255, 255), 'yellow': (54, 255, 255) }
 
 for key, value in upper.items():
-    mask = cv2.inRange(blur, lower[key], upper[key])
+    kernel = np.ones((9, 9), np.uint8)
+    mask_pt = cv2.inRange(blur, lower[key], upper[key])
+    mask_pt = cv2.morphologyEx(mask_pt, cv2.MORPH_OPEN, kernel)
+    mask_pt = cv2.morphologyEx(mask_pt, cv2.MORPH_CLOSE, kernel)
+    if not 'mask' in locals():
+        mask = mask_pt
+    else:
+        mask = mask_pt + mask
+
 
 res = cv2.bitwise_and(image,image, mask= mask)            
 
